@@ -5,6 +5,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
+const { errors } = require('celebrate');
 const router = require('./routes/index');
 const errorHandler = require('./middlewares/error-handler');
 
@@ -34,13 +35,15 @@ app.use(bodyParser.json());
 
 app.use((req, res, next) => {
   req.user = {
-    _id: '63f62d2fa04c6cd4137099dе',
+    _id: '63f62d2fa04c6cd4137099de',
   };
 
   next();
 });
 
 app.use(router);
+
+app.use(errors());
 
 app.use(errorHandler);
 

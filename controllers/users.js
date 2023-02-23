@@ -51,7 +51,7 @@ module.exports.login = (req, res, next) => {
 
 module.exports.getUserInfo = (req, res, next) => {
   const { _id } = req.user;
-  console.log(NODE_ENV);
+
   User.findById(_id)
     .then((user) => {
       if (!user) {

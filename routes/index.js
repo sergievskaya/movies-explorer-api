@@ -3,6 +3,8 @@ const routerUsers = require('./users');
 const routerMovies = require('./movies');
 const NotFoundError = require('../errors/not-found-error');
 
+const auth = require('../middlewares/auth');
+
 const {
   validateCreateUser,
   validateLogin,
@@ -17,9 +19,9 @@ router.post('/signup', validateCreateUser, createUser);
 
 router.post('/signin', validateLogin, login);
 
-router.use(routerUsers);
+router.use(auth, routerUsers);
 
-router.use(routerMovies);
+router.use(auth, routerMovies);
 
 router.use('*', () => {
   throw new NotFoundError('Ресурс не найден. Проверьте URL и метод запроса');

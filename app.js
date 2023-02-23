@@ -4,10 +4,11 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const helmet = require('helmet');
-const rateLimit = require('express-rate-limit');
 const { errors } = require('celebrate');
 const router = require('./routes/index');
 const errorHandler = require('./middlewares/error-handler');
+const { requestLogger, errorLogger } = require('./middlewares/logger');
+const limiter = require('./middlewares/rateLimit');
 
 const {
   PORT = 3000,
@@ -20,28 +21,17 @@ mongoose.connect(MONGO_URL);
 
 app.use(cors());
 
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 100,
-  standardHeaders: true,
-  legacyHeaders: false,
-});
-
 app.use(limiter);
 
 app.use(helmet());
 
 app.use(bodyParser.json());
 
-app.use((req, res, next) => {
-  req.user = {
-    _id: '63f62d2fa04c6cd4137099de',
-  };
-
-  next();
-});
+app.use(requestLogger);
 
 app.use(router);
+
+app.use(errorLogger);
 
 app.use(errors());
 

@@ -19,9 +19,9 @@ router.post('/signup', validateCreateUser, createUser);
 
 router.post('/signin', validateLogin, login);
 
-router.use(auth, routerUsers);
+router.use('/users', auth, routerUsers);
 
-router.use(auth, routerMovies);
+router.use('/movies', auth, routerMovies);
 
 router.use('*', () => {
   throw new NotFoundError('Ресурс не найден. Проверьте URL и метод запроса');

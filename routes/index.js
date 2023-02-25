@@ -23,7 +23,7 @@ router.use('/users', auth, routerUsers);
 
 router.use('/movies', auth, routerMovies);
 
-router.use('*', () => {
+router.use('*', auth, () => {
   throw new NotFoundError('Ресурс не найден. Проверьте URL и метод запроса');
 });
 

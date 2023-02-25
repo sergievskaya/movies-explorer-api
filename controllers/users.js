@@ -87,6 +87,9 @@ module.exports.updateUserInfo = (req, res, next) => {
       res.send(user);
     })
     .catch((err) => {
+      if (err.code === 11000) {
+        next(new ConflictError('пользователь с таким email уже существует'));
+      }
       if (err.name === 'ValidationError') {
         next(new BadRequestError('Ошибка валидации полей'));
       } else if (err.name === 'CastError') {

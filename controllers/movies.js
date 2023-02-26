@@ -39,7 +39,7 @@ module.exports.deleteMovie = (req, res, next) => {
       } else if (movie.owner.toString() !== req.user._id) {
         throw new ForbiddenError('Нет доступа к удалению фильма');
       } else {
-        return movie.remove(movie)
+        return movie.remove()
           .then(() => {
             res.send({ message: 'Фильм удалён' });
           })
